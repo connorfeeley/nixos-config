@@ -79,6 +79,14 @@
               ./nixos/hercules.nix
             ];
           };
+          rosy = self.lib.mkLinuxSystem {
+            imports = [
+              self.nixosModules.default # Defined in nixos/default.nix
+              ./systems/rosy
+              ./nixos/server/harden.nix
+              ./nixos/hercules.nix
+            ];
+          };
         };
 
         # Configurations for macOS machines (using nix-darwin)
