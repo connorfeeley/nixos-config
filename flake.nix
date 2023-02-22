@@ -71,16 +71,19 @@
           };
         };
 
-        # Configurations for my (only) macOS machine (using nix-darwin)
-        darwinConfigurations = {
-          MacBook-Pro = self.lib.mkMacosSystem {
-            imports = [
-              self.darwinModules.default # Defined in nix-darwin/default.nix
-              ./nixos/hercules.nix
-              ./systems/darwin.nix
-            ];
-          };
-        };
+        # Configurations for macOS machines (using nix-darwin)
+        darwinConfigurations =
+          let
+            default = MacBook-Pro;
+            MacBook-Pro = self.lib.mkMacosSystem {
+              imports = [
+                self.darwinModules.default # Defined in nix-darwin/default.nix
+                ./nixos/hercules.nix
+                ./systems/darwin.nix
+              ];
+            };
+          in
+          { inherit default MacBook-Pro; };
       };
 
       perSystem = { pkgs, config, inputs', ... }: {
