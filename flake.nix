@@ -46,6 +46,9 @@
 
   outputs = inputs@{ self, home-manager, nixpkgs, darwin, ... }:
     inputs.flake-parts.lib.mkFlake { inherit (inputs) self; } {
+      # Expose private flake values to the repl for inspection
+      debug = true;
+
       systems = [ "x86_64-linux" "aarch64-darwin" ];
       imports = [
         inputs.flake-root.flakeModule
