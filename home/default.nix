@@ -7,7 +7,7 @@
   flake = {
     homeModules = {
       common = {
-        home.stateVersion = "22.11";
+        home.stateVersion = "21.11";
         imports = [
           ./tmux.nix
           ./neovim.nix
