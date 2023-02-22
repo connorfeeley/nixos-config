@@ -10,7 +10,7 @@
       # Expose private flake values to the repl for inspection
       debug = true;
 
-      systems = [ "x86_64-linux" "aarch64-darwin" ];
+      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       imports = [
         inputs.flake-root.flakeModule
         inputs.mission-control.flakeModule
