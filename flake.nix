@@ -6,7 +6,8 @@
   description = "Srid's NixOS configuration";
 
   outputs = inputs@{ self, home-manager, nixpkgs, darwin, ... }:
-    inputs.flake-parts.lib.mkFlake { inherit (inputs) self; } {
+    let lib = nixpkgs.lib.extend (_: _: import ./lib { inherit (nixpkgs) lib; });
+    in inputs.flake-parts.lib.mkFlake { inherit inputs; specialArgs = { inherit lib; }; } {
       # Expose private flake values to the repl for inspection
       debug = true;
 
@@ -14,7 +15,7 @@
       imports = [
         inputs.flake-root.flakeModule
         inputs.mission-control.flakeModule
-        ./lib.nix
+        ./lib/flake-module.nix
         ./users
         ./home
         ./nixos
