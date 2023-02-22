@@ -93,7 +93,6 @@
 
     # Devshell inputs
     mission-control.url = "github:Platonic-Systems/mission-control";
-    mission-control.inputs.nixpkgs.follows = "nixpkgs";
     flake-root.url = "github:srid/flake-root";
 
     # Software inputs
