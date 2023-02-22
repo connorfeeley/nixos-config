@@ -83,7 +83,7 @@
               imports = [
                 self.darwinModules.default # Defined in nix-darwin/default.nix
                 ./nixos/hercules.nix
-                ./systems/darwin.nix
+                ./systems/MacBook-Pro.nix
               ];
             };
           in
