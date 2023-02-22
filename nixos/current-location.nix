@@ -5,11 +5,11 @@
 { config, pkgs, ... }:
 
 {
-  time.timeZone = "America/New_York";
+  time.timeZone = "America/Toronto";
 
   location = {
-    # Quebec City
-    latitude = 46.813359;
-    longitude = -71.215796;
+    # Toronto
+    latitude = 43.6532;
+    longitude = -79.3832;
   };
 }
