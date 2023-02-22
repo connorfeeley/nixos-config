@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Sridhar Ratnakumar
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 { pkgs, ... }: {
   nix.settings.trusted-public-keys = [
     # (builtins.readFile ../../secrets/cache-pub-key)

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2023 Sridhar Ratnakumar
+
+SPDX-License-Identifier: BSD-3-Clause
+-->
+
 This repository contains the Nix / NixOS configuration for all of my systems. 
 
 ## Setup

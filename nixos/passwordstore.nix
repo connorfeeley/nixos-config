@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Sridhar Ratnakumar
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 { pkgs, ... }: {
   programs.gnupg = {
     # Enabling the agent requires a system restart.

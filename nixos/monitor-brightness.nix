@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Sridhar Ratnakumar
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # TODO: GNOME support via https://extensions.gnome.org/extension/2645/brightness-control-using-ddcutil/
 
 { pkgs, flake, ... }: {

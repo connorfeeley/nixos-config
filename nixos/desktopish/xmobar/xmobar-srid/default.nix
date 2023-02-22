@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Sridhar Ratnakumar
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Since the xmonad config will be built by nixos-rebuild, we use the
 # nix-channel's nixpkgs.
 { pkgs ? import <nixpkgs> { } }:

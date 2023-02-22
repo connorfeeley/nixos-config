@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Sridhar Ratnakumar
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 { pkgs, inputs, system, flake, ... }:
 let
   emanote = inputs.emanote.outputs.defaultPackage.${system};

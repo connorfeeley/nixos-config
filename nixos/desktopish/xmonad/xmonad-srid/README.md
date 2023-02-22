@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2023 Sridhar Ratnakumar
+
+SPDX-License-Identifier: BSD-3-Clause
+-->
+
 # Srid's XMonad configuration
 
 See https://www.srid.ca/xmonad-conf-ide

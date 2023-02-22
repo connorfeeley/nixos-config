@@ -1,3 +1,7 @@
+-- SPDX-FileCopyrightText: 2023 Sridhar Ratnakumar
+--
+-- SPDX-License-Identifier: BSD-3-Clause
+
 {-# LANGUAGE OverloadedStrings #-}
 
 import qualified Data.Map.Strict as M

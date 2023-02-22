@@ -1,0 +1,9 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: dotfiles
+Upstream-Contact: Connor Feeley <git@cfeeley.org>
+Source: https://sr.ht/~cfeeley/dotfiles/
+
+Files: *
+Copyright: 2023 Connor Feeley git@cfeeley.org
+           2023 Sridhar Ratnakumar
+License: BSD-3-Clause

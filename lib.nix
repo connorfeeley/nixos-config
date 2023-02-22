@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Sridhar Ratnakumar
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Support code for this repo. This module could be made its own external repo.
 { self, inputs, config, ... }:
 {

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Sridhar Ratnakumar
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 { config, pkgs, ... }:
 let
   # Suckless Terminal provides good performance. Just need to increase the
