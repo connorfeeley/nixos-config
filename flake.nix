@@ -63,7 +63,7 @@
       flake = {
         # Configurations for Linux (NixOS) systems
         nixosConfigurations = {
-          hetzner-ax101 = self.lib.mkLinuxSystem {
+          hetzner-ax101 = self.lib.mkLinuxSystem "x86_64-linux" {
             imports = [
               self.nixosModules.default # Defined in nixos/default.nix
               ./systems/hetzner/ax101.nix
@@ -71,7 +71,7 @@
               ./nixos/hercules.nix
             ];
           };
-          workstation = self.lib.mkLinuxSystem {
+          workstation = self.lib.mkLinuxSystem "x86_64-linux" {
             imports = [
               self.nixosModules.default # Defined in nixos/default.nix
               ./systems/workstation
@@ -79,7 +79,7 @@
               ./nixos/hercules.nix
             ];
           };
-          rosy = self.lib.mkLinuxSystem {
+          rosy = self.lib.mkLinuxSystem "aarch64-linux" {
             imports = [
               self.nixosModules.default # Defined in nixos/default.nix
               ./systems/rosy
@@ -93,7 +93,7 @@
         darwinConfigurations =
           let
             default = MacBook-Pro;
-            MacBook-Pro = self.lib.mkMacosSystem {
+            MacBook-Pro = self.lib.mkMacosSystem "aarch64-darwin" {
               imports = [
                 self.darwinModules.default # Defined in nix-darwin/default.nix
                 ./nixos/hercules.nix

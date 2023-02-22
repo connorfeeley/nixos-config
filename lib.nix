@@ -37,8 +37,8 @@
       ];
     };
     lib = {
-      mkLinuxSystem = mod: inputs.nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
+      mkLinuxSystem = system: mod: inputs.nixpkgs.lib.nixosSystem rec {
+        inherit system;
         # Arguments to pass to all modules.
         specialArgs = {
           inherit system inputs;
@@ -47,8 +47,8 @@
         modules = [ mod ];
       };
 
-      mkMacosSystem = mod: inputs.darwin.lib.darwinSystem rec {
-        system = "aarch64-darwin";
+      mkMacosSystem = system: mod: inputs.darwin.lib.darwinSystem rec {
+        inherit system;
         specialArgs = {
           inherit inputs system;
           flake = { inherit config; };
