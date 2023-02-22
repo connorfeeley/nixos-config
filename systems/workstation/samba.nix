@@ -2,16 +2,11 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-{ config
-, ...
-}:
+{ flake, config, ... }:
 # Source: https://fy.blackhats.net.au/blog/html/2021/03/22/time_machine_on_samba_with_zfs.html
 
 # Server setup: sudo smbpasswd -a cfeeley
 # MacOS setup: tmutil setdestination smb://cfeeley:<password>@workstation/timemachine
-let
-  inherit (config.dotfield) guardian;
-in
 {
   services.samba-wsdd.enable = true; # make shares visible for windows 10 clients
   services.samba = {
@@ -81,8 +76,8 @@ in
         "fruit:aapl" = "yes";
         "vfs objects" = "catia fruit streams_xattr";
       };
-      "${guardian.username}" = {
-        path = "/home/${guardian.username}";
+      "${flake.config.people.myself}" = {
+        path = "/home/${flake.config.people.myself}";
         "valid users" = "cfeeley";
         public = "no";
         browsable = "yes";

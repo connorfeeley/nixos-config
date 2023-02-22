@@ -2,20 +2,23 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-{ config
+{ flake
+, config
 , options
 , lib
 , pkgs
 , profiles
 , ...
 }:
-let isVm = ! options.virtualisation ? qemu;
-in {
+{
   imports = [
     ./hardware-configuration.nix
     ./zfs-root.nix
     ./samba.nix
   ];
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
 
   # OKAY: make sure I don't bork my system remotely!
   # Bork bork: https://www.youtube.com/watch?v=i1H0leZhXcY
@@ -142,7 +145,7 @@ in {
   #   };
   # };
 
-  environment.systemPackages = with pkgs; [ cryptsetup linuxPackages.usbip input-leap ];
+  environment.systemPackages = with pkgs; [ cryptsetup linuxPackages.usbip ];
 
   ### === Shares ============================================================
   fileSystems."/mnt/export/cfeeley" = {
@@ -181,7 +184,7 @@ in {
 
   users.mutableUsers = false;
   users.users.root.hashedPassword = "$6$V/uLpKYBvGk/Eqs7$IMguTPDVu5v1B9QBkPcIi/7g17DPfE6LcSc48io8RKHUjJDOLTJob0qYEaiUCAS5AChK.YOoJrpP5Bx38XIDB0";
-  users.users.cfeeley = {
+  users.users.${flake.config.people.myself} = {
     uid = 1000;
     isNormalUser = true;
     initialHashedPassword = "$6$V/uLpKYBvGk/Eqs7$IMguTPDVu5v1B9QBkPcIi/7g17DPfE6LcSc48io8RKHUjJDOLTJob0qYEaiUCAS5AChK.YOoJrpP5Bx38XIDB0";
