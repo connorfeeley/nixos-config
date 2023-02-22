@@ -60,17 +60,20 @@
       flake = {
         # Configurations for Linux (NixOS) systems
         nixosConfigurations = {
-          workstation = self.lib.mkLinuxSystem {
+          hetzner-ax101 = self.lib.mkLinuxSystem {
             imports = [
               self.nixosModules.default # Defined in nixos/default.nix
               ./systems/hetzner/ax101.nix
               ./nixos/server/harden.nix
               ./nixos/hercules.nix
-              # I host a Nix cache
-              # (import ./nixos/cache-server.nix {
-              #   keyName = "cache-priv-key";
-              #   domain = "cache.srid.ca";
-              # })
+            ];
+          };
+          workstation = self.lib.mkLinuxSystem {
+            imports = [
+              self.nixosModules.default # Defined in nixos/default.nix
+              ./systems/workstation
+              ./nixos/server/harden.nix
+              ./nixos/hercules.nix
             ];
           };
         };
