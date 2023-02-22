@@ -2,13 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-{ config
-, options
-, lib
-, ...
-}:
-# Don't configure ZFS for VMs
-lib.mkIf (!options.virtualisation ? qemu) {
+{ config, options, lib, ... }: {
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.efiInstallAsRemovable = false;
@@ -38,7 +32,7 @@ lib.mkIf (!options.virtualisation ? qemu) {
     "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_Plus_1TB_S59ANMFNB30863T"
   ];
 
-  boot.zfs.extraPools = lib.optionals (!config.nixos-vm.enable) [ "rpool" ];
+  boot.zfs.extraPools = [ "rpool" ];
 
   fileSystems."/" =
     {
