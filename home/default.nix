@@ -22,6 +22,7 @@
           ./vscode-server.nix
 
           ./kitty
+          ./gnome
         ];
         programs.bash.enable = true;
       };
