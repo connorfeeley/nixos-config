@@ -59,8 +59,8 @@
             MacBook-Pro = self.lib.mkMacosSystem "aarch64-darwin" {
               imports = [
                 self.darwinModules.default # Defined in nix-darwin/default.nix
-                ./nixos/hercules.nix
                 ./systems/MacBook-Pro.nix
+                ./nixos/hercules.nix
               ];
             };
           in
