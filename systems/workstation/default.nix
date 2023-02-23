@@ -123,6 +123,8 @@ in
 
   ### === users ================================================================
 
+  users.mutableUsers = false;
+  users.users.root.hashedPassword = "$6$V/uLpKYBvGk/Eqs7$IMguTPDVu5v1B9QBkPcIi/7g17DPfE6LcSc48io8RKHUjJDOLTJob0qYEaiUCAS5AChK.YOoJrpP5Bx38XIDB0";
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${flake.config.people.myself} = {
     uid = 1000;
@@ -150,7 +152,6 @@ in
     openssh.authorizedKeys.keys = flake.config.people.users.${flake.config.people.myself}.sshKeys;
     shell = pkgs.zsh;
   };
-  users.users.root.hashedPassword = "$6$V/uLpKYBvGk/Eqs7$IMguTPDVu5v1B9QBkPcIi/7g17DPfE6LcSc48io8RKHUjJDOLTJob0qYEaiUCAS5AChK.YOoJrpP5Bx38XIDB0";
   security.sudo.wheelNeedsPassword = false;
 
   ### === xorg ================================================================
