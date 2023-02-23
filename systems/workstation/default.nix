@@ -52,11 +52,13 @@ in
   networking.useDHCP = false;
   networking.firewall.checkReversePath = "loose"; # Tailscale recommends this
 
-  networking.interfaces."enp7s0" = {
+  networking.usePredictableInterfaceNames = false;
+  networking.interfaces."eth0" = {
+    useDHCP = true;
     ipv4 = {
       addresses = [{
-        # Server main IPv4 address
-        address = "85.10.192.137";
+        # Main IPv4 address
+        address = "192.168.88.10";
         prefixLength = 24;
       }];
 
@@ -65,7 +67,7 @@ in
         {
           address = "0.0.0.0";
           prefixLength = 0;
-          via = "85.10.192.129";
+          via = "192.168.0.1";
         }
       ];
     };
