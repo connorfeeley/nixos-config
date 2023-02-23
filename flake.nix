@@ -47,6 +47,7 @@
               ./systems/workstation
               ./nixos/server/harden.nix
               ./nixos/hercules.nix
+              ./nixos/xorg.nix
             ];
           };
         };

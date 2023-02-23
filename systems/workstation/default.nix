@@ -15,7 +15,7 @@ in
       ./samba.nix
     ];
 
-#   # Allow unfree packages
+  #   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # OKAY: make sure I don't bork my system remotely!
@@ -119,6 +119,8 @@ in
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
+  ### === users ================================================================
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${flake.config.people.myself} = {
     uid = 1000;
@@ -143,10 +145,56 @@ in
       ++ (lib.optional config.virtualisation.libvirtd.enable "libvirtd")
       ++ (lib.optional config.virtualisation.virtualbox.host.enable "vboxusers")
     ;
+    openssh.authorizedKeys.keys = flake.config.people.users.${flake.config.people.myself}.sshKeys;
     shell = pkgs.zsh;
   };
   users.users.root.hashedPassword = "$6$V/uLpKYBvGk/Eqs7$IMguTPDVu5v1B9QBkPcIi/7g17DPfE6LcSc48io8RKHUjJDOLTJob0qYEaiUCAS5AChK.YOoJrpP5Bx38XIDB0";
   security.sudo.wheelNeedsPassword = false;
+
+  ### === xorg ================================================================
+
+  # Mapped from left to right
+  # Affects /etc/X11/xorg.conf
+  services.xserver = {
+    xrandrHeads = [
+      {
+        output = "DP-0";
+        monitorConfig = ''
+          DisplaySize 607 345
+          Option      "DPMS"
+        '';
+      }
+      {
+        output = "HDMI-0";
+        primary = true;
+        monitorConfig = ''
+          DisplaySize 697 392
+          Option      "DPMS"
+        '';
+      }
+      {
+        output = "DP-2";
+        monitorConfig = ''
+          DisplaySize 607 345
+          Option      "DPMS"
+        '';
+      }
+    ];
+    displayManager = {
+      autoLogin = {
+        # Log in automatically
+        enable = true;
+        user = flake.config.people.myself;
+      };
+
+      sessionCommands = ''
+        # Fix keyring unlock
+        ${
+          lib.getBin pkgs.dbus
+        }/bin/dbus-update-activation-environment --systemd --all
+      '';
+    };
+  };
 
   system.stateVersion = "20.03";
 }

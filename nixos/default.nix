@@ -35,6 +35,7 @@ in
         ./ssh-authorize.nix
         ./current-location.nix
         ./terminal.nix
+        ./gnome.nix
       ];
     };
   };
