@@ -3,12 +3,13 @@
 # SPDX-License-Identifier: MIT
 
 { config, lib, pkgs, ... }: {
-  # Attributes applied to 'nixos-rebuild build-vm' builds
+  # Attributes added to 'nixos-rebuild build-vm' hosts
   virtualisation.vmVariant = { lib, pkgs, ... }: {
+    # Platform of the VM
     nixpkgs.hostPlatform = "aarch64-linux";
 
     virtualisation = {
-      # nixpkgs.pkgs = inputs.self.legacyPackages.${config.nixpkgs.system};
+      # Platform of the host
       host.pkgs = import pkgs.path { system = "aarch64-darwin"; };
 
       cores = 4;
@@ -17,6 +18,9 @@
       msize = 104857600; # 100M
 
       graphics = true;
+
+      # Cursor isn't shown in MacOS QEMU VMs
+      qemu.options = lib.optionals config.virtualisation.vmVariant.virtualisation.graphics [ "-display cocoa,show-cursor=on" ];
     };
 
     services.xserver.resolutions = lib.mkOverride 9 [{ x = 1680; y = 1050; }];
