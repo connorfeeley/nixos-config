@@ -11,7 +11,7 @@
   services.hercules-ci-agent = {
     enable = true;
     # nixpkgs may not always have the latest HCI.
-    package = inputs.hci.packages.${system}.hercules-ci-agent;
+    package = inputs.hercules-ci-agent.packages.${system}.hercules-ci-agent;
   };
 
   # Regularly optimize nix store if using CI, because CI use can produce *lots*

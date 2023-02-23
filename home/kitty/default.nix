@@ -5,6 +5,7 @@
 , ...
 }:
 let
+  inherit (inputs) base16-kitty nix-colors;
   inherit (pkgs.stdenv.hostPlatform) isDarwin isAarch64;
 
   socket = "unix:/tmp/kitty-socket";

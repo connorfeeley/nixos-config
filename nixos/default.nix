@@ -28,7 +28,7 @@ in
       default.imports = [
         self.nixosModules.home-manager
         self.nixosModules.myself
-        inputs.agenix.nixosModules.default
+        inputs.agenix.nixosModules.age
         ./vmVariant.nix
         ./caches
         ./self-ide.nix
