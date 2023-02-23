@@ -20,6 +20,8 @@
         imports = [
           self.homeModules.common
           ./vscode-server.nix
+
+          ./kitty
         ];
         programs.bash.enable = true;
       };
