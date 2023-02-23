@@ -20,6 +20,7 @@
         self.darwinModules.home-manager
         self.darwinModules.myself
         ../nixos/caches
+        ./homebrew.nix
       ];
     };
 
