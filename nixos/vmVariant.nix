@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 { config, lib, pkgs, ... }: {
+  # Attributes applied to 'nixos-rebuild build-vm' builds
   virtualisation.vmVariant = { lib, pkgs, ... }: {
     nixpkgs.hostPlatform = "aarch64-linux";
 
@@ -17,5 +18,7 @@
 
       graphics = true;
     };
+
+    services.xserver.resolutions = lib.mkOverride 9 [{ x = 1680; y = 1050; }];
   };
 }
