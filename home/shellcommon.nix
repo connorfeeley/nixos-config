@@ -5,5 +5,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 { pkgs, ... }: {
-  imports = [ ./shells/zsh ];
+  imports = [ ./shells/zsh ./shells/bash ./shells/fish ];
 }

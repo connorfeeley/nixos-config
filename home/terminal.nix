@@ -9,13 +9,15 @@
     # Unixy tools
     gnumake
     ripgrep
-    htop
+    fd
 
     inputs.comma.packages.${system}.default
   ];
 
   programs = {
     bat.enable = true;
+    exa.enable = true;
+    htop.enable = true;
     autojump.enable = false;
     zoxide.enable = true;
     fzf.enable = true;
