@@ -33,18 +33,18 @@
               ./nixos/hercules.nix
             ];
           };
-          workstation = self.lib.mkLinuxSystem "x86_64-linux" {
-            imports = [
-              self.nixosModules.default # Defined in nixos/default.nix
-              ./systems/workstation
-              ./nixos/server/harden.nix
-              ./nixos/hercules.nix
-            ];
-          };
           rosy = self.lib.mkLinuxSystem "aarch64-linux" {
             imports = [
               self.nixosModules.default # Defined in nixos/default.nix
               ./systems/rosy
+              ./nixos/server/harden.nix
+              ./nixos/hercules.nix
+            ];
+          };
+          workstation = self.lib.mkLinuxSystem "x86_64-linux" {
+            imports = [
+              self.nixosModules.default # Defined in nixos/default.nix
+              ./systems/workstation
               ./nixos/server/harden.nix
               ./nixos/hercules.nix
             ];
