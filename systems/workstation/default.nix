@@ -38,13 +38,6 @@ in
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/a006ffe3-5d21-4439-8a00-a527beb18ff7";
-    fsType = "ext4";
-  };
-
-  swapDevices = [ ];
-
   nix.settings.max-jobs = lib.mkDefault 12;
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
 

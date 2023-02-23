@@ -159,6 +159,7 @@
     prefmanager.url = "github:malob/prefmanager";
     tum-dse-config = { url = "github:TUM-DSE/doctor-cluster-config"; inputs.nixpkgs.follows = "nixpkgs"; inputs.nixpkgs-unstable.follows = "nixpkgs"; inputs.flake-parts.follows = "flake-parts"; };
     neovim-plusultra = { url = "github:jakehamilton/neovim"; };
+    emacstool = { url = "github:paulotome/emacstool"; flake = false; };
 
     ##: --- other --------------------------------------------------------------
     flake-compat = { url = "github:edolstra/flake-compat"; flake = false; };
@@ -167,5 +168,6 @@
     firefox-lepton = { url = "github:black7375/Firefox-UI-Fix"; flake = false; };
     modded-minecraft-servers = { url = "github:mkaito/nixos-modded-minecraft-servers"; inputs.nixpkgs.follows = "nixpkgs"; };
     plasma-manager = { url = "github:pjones/plasma-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
+    doom-corfu = { url = "sourcehut:~gagbo/doom-config"; flake = false; };
   };
 }

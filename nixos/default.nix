@@ -24,6 +24,7 @@ in
       ];
       myself = mkHomeModule config.people.myself [
         ../home/shellcommon.nix
+        self.homeModules.emacs
       ];
       default.imports = [
         self.nixosModules.home-manager

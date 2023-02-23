@@ -1,4 +1,9 @@
 #!/usr/bin/env zsh
+
+# SPDX-FileCopyrightText: 2023 Connor Feeley
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Additions to emacs-vterm-zsh.sh from emacs-libvterm
 
 # Usage:

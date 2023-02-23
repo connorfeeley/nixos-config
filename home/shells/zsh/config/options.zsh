@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Connor Feeley
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 ###: GENERAL ===================================================================
 
 # Use bash-style word selections (don't kill entire path; only path components separated by '/')

@@ -415,6 +415,22 @@
         "type": "github"
       }
     },
+    "doom-corfu": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1676971043,
+        "narHash": "sha256-fH9dmOw2CyucwQc/uUbP/cf01CuaD7xHOJThBrc75k0=",
+        "owner": "~gagbo",
+        "repo": "doom-config",
+        "rev": "5356192bbb17be99cf80a7c62f6061f96d036c36",
+        "type": "sourcehut"
+      },
+      "original": {
+        "owner": "~gagbo",
+        "repo": "doom-config",
+        "type": "sourcehut"
+      }
+    },
     "dwarffs": {
       "inputs": {
         "nix": "nix_2",
@@ -456,6 +472,22 @@
       "original": {
         "owner": "nix-community",
         "repo": "emacs-overlay",
+        "type": "github"
+      }
+    },
+    "emacstool": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1578273763,
+        "narHash": "sha256-oIEMiACmBKOZzb7H2YqN5zwTCvfz/aHCcB0QdsdG1K4=",
+        "owner": "paulotome",
+        "repo": "emacstool",
+        "rev": "b3833e1a4eda767cf0ed28e12b1311ccf0f41cfe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "paulotome",
+        "repo": "emacstool",
         "type": "github"
       }
     },
@@ -3338,8 +3370,10 @@
         "deploy-flake": "deploy-flake",
         "devenv": "devenv",
         "digga": "digga",
+        "doom-corfu": "doom-corfu",
         "dwarffs": "dwarffs",
         "emacs-overlay": "emacs-overlay",
+        "emacstool": "emacstool",
         "envfs": "envfs",
         "firefox-lepton": "firefox-lepton",
         "flake-compat": "flake-compat_7",
