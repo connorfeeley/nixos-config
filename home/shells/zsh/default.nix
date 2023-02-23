@@ -9,8 +9,7 @@
 }:
 let
   inherit (pkgs.stdenv) isDarwin;
-  inherit (config.lib) dotfield;
-  configDir = dotfield.userConfigPath + "/zsh";
+  configDir = ./config;
 
   shellAliases =
     (import ../abbrs.nix) //

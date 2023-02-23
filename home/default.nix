@@ -21,7 +21,6 @@
           self.homeModules.common
           ./vscode-server.nix
 
-          ./shells/zsh
           ./kitty
           ./gnome
         ];
