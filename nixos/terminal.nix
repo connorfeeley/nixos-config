@@ -6,6 +6,9 @@
 
 let inherit (pkgs.stdenv) isx86_64;
 in {
+  console.keyMap = "dvorak";
+  console.font = "Lat2-Terminus16";
+
   programs.htop.enable = true;
 
   programs.atop = {
@@ -16,5 +19,4 @@ in {
     atopService.enable = true;
     atopRotateTimer.enable = true;
   };
-
 }
