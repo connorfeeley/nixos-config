@@ -28,11 +28,13 @@ in
       default.imports = [
         self.nixosModules.home-manager
         self.nixosModules.myself
-        inputs.agenix.nixosModule
+        inputs.agenix.nixosModules.default
+        ./vmVariant.nix
         ./caches
         ./self-ide.nix
         ./ssh-authorize.nix
         ./current-location.nix
+        ./terminal.nix
       ];
     };
   };

@@ -2,22 +2,20 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-{ flake
-, config
-, options
-, lib
-, pkgs
-, profiles
-, ...
-}:
+{ flake, modulesPath, self, inputs, config, options, lib, pkgs, profiles, ... }:
+let inherit (pkgs.stdenv.hostPlatform) isx86_64;
+in
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./zfs-root.nix
-    ./samba.nix
-  ];
+  # imports = [ ./hardware-configuration.nix ./zfs-root.nix ./samba.nix ];
+  imports =
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
+      ./hardware-configuration.nix
+      ./zfs-root.nix
+      ./samba.nix
+    ];
 
-  # Allow unfree packages
+#   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # OKAY: make sure I don't bork my system remotely!
@@ -34,162 +32,99 @@
   #   message = "Workstation may not be remotely accessible via tailscale.";
   # }];
 
-  # Mount /tmp as tmpfs
-  boot.tmpOnTmpfs = true;
 
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.initrd.availableKernelModules = [ "nvme" "ahci" "usbhid" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.kernelModules = [ "kvm-amd" ];
+  boot.extraModulePackages = [ ];
 
-  # virtualisation.vmVariant = {
-  #   virtualisation.graphics = true;
-  # };
-
-  system.stateVersion = "22.05";
-
-  ### === timezone ============================================================
-
-  time = {
-    timeZone = "America/Toronto";
-    hardwareClockInLocalTime = true;
-  };
-  environment.sessionVariables.TZ = "${config.time.timeZone}";
-  location = {
-    provider = "manual";
-    latitude = 43.70011;
-    longitude = -79.4163;
-  };
-  environment.etc.timezone.source = "${pkgs.tzdata}/share/zoneinfo/${config.time.timeZone}";
-
-  ### === networking ===========================================================
-
-  # networking = lib.mkIf isVm (
-  #   let
-  #     host = peers.hosts.${hostName};
-  #     net = peers.networks.${host.network};
-  #     interface = "eth0";
-  #   in
-  #   {
-  #     useDHCP = false;
-  #     usePredictableInterfaceNames = false;
-  #     # interfaces.wlp6s0.useDHCP = true;
-
-  #     firewall = {
-  #       enable = true;
-  #       allowedTCPPorts = [
-  #         2049 # 2049: NFS
-  #         5357 # wsdd
-
-  #         # UxPlay (AirPlay)
-  #         7000
-  #         7001
-  #         7100
-  #       ];
-  #       allowedUDPPorts = [
-  #         3702 # wsdd
-
-  #         # UxPlay (AirPlay)
-  #         6000
-  #         6001
-  #         7011
-  #       ];
-  #     };
-
-  #     defaultGateway = {
-  #       inherit interface;
-  #       inherit (net.ipv4) address;
-  #     };
-
-  #     interfaces.${interface} = {
-  #       useDHCP = true;
-  #       ipv4.addresses = [{
-  #         inherit (host.ipv4) address;
-  #         inherit (net.ipv4) prefixLength;
-  #       }];
-  #     };
-  #     interfaces.eth1 = {
-  #       ipv4.addresses = [{
-  #         address = "192.168.88.50";
-  #         inherit (net.ipv4) prefixLength;
-  #       }];
-  #     };
-  #   }
-  # );
-
-  boot.kernel.sysctl = {
-    "net.ipv6.route.max_size" = 2147483647; # Default: 4096
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/a006ffe3-5d21-4439-8a00-a527beb18ff7";
+    fsType = "ext4";
   };
 
-  boot.kernelModules = [ "usbip" ];
+  swapDevices = [ ];
 
-  ### === Remote LUKS/ZFS Unlock  ============================================================
+  nix.settings.max-jobs = lib.mkDefault 12;
+  powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
 
-  # Enable tailscale in initrd
-  # remote-machine.boot.tailscaleUnlock = lib.mkIf isVm {
-  #   enable = true;
-  #   tailscaleStatePath = "/etc/secrets/initrd/tailscale-luks-setup.state";
-  # };
+  # Network (Hetzner uses static IP assignments, and we don't use DHCP here)
+  networking.useDHCP = false;
+  networking.firewall.checkReversePath = "loose"; # Tailscale recommends this
 
-  # Enable networking and SSH server in initrd
-  # boot.initrd = lib.mkIf isVm {
-  #   # Driver for MSI (motherboard) 2.5GbE interface
-  #   availableKernelModules = [ "r8169" ];
+  networking.interfaces."enp7s0" = {
+    ipv4 = {
+      addresses = [{
+        # Server main IPv4 address
+        address = "85.10.192.137";
+        prefixLength = 24;
+      }];
 
-  #   network.enable = true;
-  #   network.ssh = {
-  #     enable = true;
-  #     authorizedKeys = primaryUser.authorizedKeys;
-  #     hostKeys = [
-  #       # WARNING: DON'T USE AGE HERE
-  #       "/etc/secrets/initrd/ssh_host_rsa_key"
-  #       "/etc/secrets/initrd/ssh_host_ed25519_key"
-  #     ];
-  #   };
-  # };
+      routes = [
+        # Default IPv4 gateway route
+        {
+          address = "0.0.0.0";
+          prefixLength = 0;
+          via = "85.10.192.129";
+        }
+      ];
+    };
 
-  environment.systemPackages = with pkgs; [ cryptsetup linuxPackages.usbip ];
+    ipv6 = {
+      addresses = [{
+        address = "2a01:4f8:a0:64e7::1";
+        prefixLength = 64;
+      }];
 
-  ### === Shares ============================================================
-  fileSystems."/mnt/export/cfeeley" = {
-    device = "/home/cfeeley";
-    options = [ "bind" ];
+      # Default IPv6 route
+      routes = [{
+        address = "::";
+        prefixLength = 0;
+        via = "fe80::1";
+      }];
+    };
   };
 
-  services.nfs.server.enable = true;
-  services.nfs.server.exports = ''
-    /mnt/export         100.66.73.0/24(rw,fsid=0,no_subtree_check,all_squash,anonuid=0,anongid=100)
-    /mnt/export/cfeeley 100.66.73.0/24(rw,nohide,insecure,no_subtree_check,all_squash,anonuid=0,anongid=100)
-  '';
 
-  # services.webdav = {
-  #   enable = true;
-  #   user = "cfeeley";
-  #   settings = {
-  #     # Only expose via tailscale
-  #     address = peers.hosts.${hostName}.tailscale;
-  #     port = 33464;
-  #     auth = false;
-  #     tls = false;
-  #     prefix = "/";
-  #     debug = true; #FIXME
+  networking = {
+    nameservers = [ "8.8.8.8" "8.8.4.4" ];
+    hostName = "workstation";
+  };
 
-  #     # Default user settings (will be merged)
-  #     scope = ".";
-  #     modify = true;
-  #     rules = [ ];
-  #   };
-  # };
+  nix = {
+    extraOptions = ''
+      experimental-features = nix-command flakes repl-flake
+    '';
+  };
 
-  ### === users ================================================================
+  services.netdata.enable = true;
 
-  services.xserver.displayManager.defaultSession = "gnome"; # or gnome-flashback-xmonad-flashback
+  environment.systemPackages = with pkgs; [
+    lsof
+    nil
+    nixpkgs-fmt
+  ];
 
-  users.mutableUsers = false;
-  users.users.root.hashedPassword = "$6$V/uLpKYBvGk/Eqs7$IMguTPDVu5v1B9QBkPcIi/7g17DPfE6LcSc48io8RKHUjJDOLTJob0qYEaiUCAS5AChK.YOoJrpP5Bx38XIDB0";
+  services.openssh.enable = true;
+
+  services.nginx.enable = true;
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  security.acme.acceptTerms = true;
+  security.acme.defaults.email = "git@cfeeley.org";
+
+  # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
+  # Normally the machine will power down after 20 minutes if no user is logged in.
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${flake.config.people.myself} = {
     uid = 1000;
     isNormalUser = true;
     initialHashedPassword = "$6$V/uLpKYBvGk/Eqs7$IMguTPDVu5v1B9QBkPcIi/7g17DPfE6LcSc48io8RKHUjJDOLTJob0qYEaiUCAS5AChK.YOoJrpP5Bx38XIDB0";
     hashedPassword = "$6$V/uLpKYBvGk/Eqs7$IMguTPDVu5v1B9QBkPcIi/7g17DPfE6LcSc48io8RKHUjJDOLTJob0qYEaiUCAS5AChK.YOoJrpP5Bx38XIDB0";
-    # openssh.authorizedKeys.keys = primaryUser.authorizedKeys;
     extraGroups =
       [
         "wheel"
@@ -210,110 +145,8 @@
     ;
     shell = pkgs.zsh;
   };
+  users.users.root.hashedPassword = "$6$V/uLpKYBvGk/Eqs7$IMguTPDVu5v1B9QBkPcIi/7g17DPfE6LcSc48io8RKHUjJDOLTJob0qYEaiUCAS5AChK.YOoJrpP5Bx38XIDB0";
+  security.sudo.wheelNeedsPassword = false;
 
-  programs.htop.enable = true;
-
-  programs.atop = {
-    enable = true;
-    atopgpu.enable = true;
-    netatop.enable = true;
-    setuidWrapper.enable = true;
-    atopService.enable = true;
-    atopRotateTimer.enable = true;
-  };
-
-  # Enable ZFS exporter
-  services.prometheus.exporters.zfs = {
-    enable = true;
-    port = 9134;
-  };
-
-  services.x2goserver.enable = true;
-
-  services.ntopng.enable = true;
-  services.ntopng.httpPort = 9009;
-
-  virtualisation.docker.daemon.settings.hosts = lib.mkIf config.virtualisation.docker.enable [ "unix:///var/run/docker.sock" "tcp://0.0.0.0:2375" ];
-
-  # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
-  # Normally the machine will power down after 20 minutes if no user is logged in.
-  systemd.targets.sleep.enable = false;
-  systemd.targets.suspend.enable = false;
-  systemd.targets.hibernate.enable = false;
-  systemd.targets.hybrid-sleep.enable = false;
-
-  # Poll VPN endpoint every 5 minutes and send an alert if the VPN is unreachable
-  systemd.user = let name = "vpn-connection-monitor"; in {
-    services.${name} =
-      let
-        notify = "${pkgs.libnotify}/bin/notify-send --urgency=critical --category=network --app-name=${name}";
-        checkReachability = pkgs.writeShellScript "check-reachability" ''
-          if ! ${pkgs.socat}/bin/socat -v - TCP:rossvideo.com:80,connect-timeout=10; then
-            echo "Unreachable!"
-            ${notify} "${name}: VPN unreachable"
-          else
-            echo "Reachable."
-          fi
-        '';
-      in
-      {
-        description = "VPN status notification";
-
-        wantedBy = [ "graphical-session.target" ];
-        after = [ "network.target" "graphical-session.target" ];
-
-        path = [ pkgs.socat pkgs.libnotify ];
-
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = checkReachability;
-        };
-      };
-    timers.${name} = {
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnBootSec = "5m";
-        OnUnitActiveSec = "5m";
-        Unit = "vpn-connection-monitor.service";
-      };
-    };
-  };
-
-  # Jellyfin reverse proxy
-  services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
-    recommendedTlsSettings = true;
-    # other Nginx options
-    virtualHosts."workstation.elephant-vibes.ts.net" = {
-      forceSSL = true;
-      # NOTE: path to certificate file - not the file itself, which we don't want added to the store
-      sslCertificate = "/etc/secrets/tailscale/workstation.elephant-vibes.ts.net.crt";
-      sslCertificateKey = "/etc/secrets/tailscale/workstation.elephant-vibes.ts.net.key";
-
-      locations =
-        let
-          mkLocation = port: {
-            proxyPass = "http://0.0.0.0:${toString port}/";
-            proxyWebsockets = true; # needed if you need to use WebSocket
-            # extraConfig =
-            #   # required when the target is also TLS server with multiple hosts
-            #   "proxy_ssl_server_name on;" +
-            #   # required when the server wants to use HTTP Authentication
-            #   "proxy_pass_header Authorization;" +
-          };
-        in
-        {
-          # FIXME: services are not playing nice with reverse proxy
-          "/qbittorrent/" = mkLocation 8080;
-          "/jellyfin/" = mkLocation 9001;
-          "/radarr/" = mkLocation 9002;
-          "/sonarr/" = mkLocation 9003;
-          "/jackett/" = mkLocation 9004;
-          "/ntopng/" = mkLocation 9009;
-          "/grafana/" = mkLocation 9010;
-          "/prometheus/" = mkLocation 9011;
-        };
-    };
-  };
+  system.stateVersion = "20.03";
 }
