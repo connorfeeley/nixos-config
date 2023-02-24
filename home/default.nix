@@ -14,6 +14,8 @@
           ./starship.nix
           ./terminal.nix
           ./direnv.nix
+          ./gpg.nix
+          ./kitty
         ];
       };
       common-linux = {
@@ -21,7 +23,6 @@
           self.homeModules.common
           ./vscode-server.nix
 
-          ./kitty
           ./gnome
         ];
         programs.bash.enable = true;

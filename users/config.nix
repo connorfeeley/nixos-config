@@ -16,6 +16,7 @@
         # Desktop
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHCVmAx+FNqurkG9eQ7icgqS1tOzy1JyL+spWMr477mU cfeeley@workstation"
       ];
+      gpgKey = { public = ../secrets/gpg-0x77CB2390C53B4E5B.txt; keygrip = "C4A4A4DC29AB0B5672495337D1E313F5B57E11DE"; };
     };
   };
 }

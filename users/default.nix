@@ -13,10 +13,23 @@ let
         type = lib.types.str;
       };
       sshKeys = lib.mkOption {
+        description = "SSH public keys";
         type = lib.types.listOf lib.types.str;
-        description = ''
-          SSH public keys
-        '';
+      };
+      gpgKey = lib.mkOption {
+        description = "GPG key information";
+        type = lib.types.submodule {
+          options = {
+            keygrip = lib.mkOption {
+              type = lib.types.str;
+              description = "Keygrip of the GPG key";
+            };
+            public = lib.mkOption {
+              type = lib.types.path;
+              description = "Public key file";
+            };
+          };
+        };
       };
     };
   };
