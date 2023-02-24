@@ -10,6 +10,7 @@
     gnumake
     ripgrep
     fd
+    procs
 
     inputs.comma.packages.${system}.default
   ];
