@@ -105,7 +105,38 @@ in
   };
 
   perSystem = { system, config, pkgs, lib, ... }: {
+    # NOTE: Override the darwin.builder package to use more cores
+    # See nixpkgs:doc/builders/special/darwin-builder.section.md
+    packages.builder =
+      let
+        modulesPath = "${inputs.nixpkgs}/nixos/modules";
+        toGuest = builtins.replaceStrings [ "darwin" ] [ "linux" ];
+
+        nixos = import "${inputs.nixpkgs}/nixos" {
+          configuration = {
+            imports = [ (modulesPath + "/profiles/macos-builder.nix") ];
+
+            virtualisation = {
+              host = { inherit pkgs; };
+
+              cores = 8; # Builder go brrrr
+              memorySize = lib.mkOverride 9 (1024 * 6); # 6 GiB - otherwise OOMs on emacsGit
+
+              msize = 1024 * 1024 * 100; # 100M
+            };
+          };
+
+          system = toGuest pkgs.stdenv.hostPlatform.system;
+        };
+
+      in
+      nixos.config.system.build.macos-builder-installer;
+
     mission-control.scripts = {
+      builder = {
+        description = "Run NixOS aarch64-linux builder on macOS ('C-a x' to shutdown)";
+        exec = "${self.perSystem.${system}.packages.builder}/bin/macos-builder";
+      };
       update-primary = {
         description = ''
           Update primary flake inputs
