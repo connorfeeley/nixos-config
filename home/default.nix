@@ -15,6 +15,7 @@
           ./terminal.nix
           ./direnv.nix
           ./gpg.nix
+          ./git.nix
           ./kitty
         ];
       };
