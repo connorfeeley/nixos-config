@@ -4,9 +4,14 @@
 
 { config, lib, pkgs, ... }:
 let
-  # Set systems here
-  targetSystem = "x86_64-linux"; # VM system
-  hostSystem = "x86_64-linux"; # Host platform
+  ### Set systems here
+  ## When running from x86_64-linux:
+  # targetSystem = "x86_64-linux"; # VM system
+  # hostSystem = "x86_64-linux"; # Host platform
+
+  ## When running from aarch64-darwin:
+  targetSystem = "aarch64-linux"; # VM system
+  hostSystem = "aarch64-darwin"; # Host platform
 in
 {
   # Attributes added to 'nixos-rebuild build-vm' hosts

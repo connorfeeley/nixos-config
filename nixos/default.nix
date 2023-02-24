@@ -31,6 +31,8 @@ in
         self.nixosModules.myself
         inputs.agenix.nixosModules.age
         ./vmVariant.nix
+        ./boot-unlock.nix
+        ./tailscale.nix
         ./caches
         ./self-ide.nix
         ./ssh-authorize.nix

@@ -20,20 +20,25 @@ in
 
   # OKAY: make sure I don't bork my system remotely!
   # Bork bork: https://www.youtube.com/watch?v=i1H0leZhXcY
-  # assertions = lib.mkIf isVm [{
-  #   # Ensure eth0 (motherboard ethernet) is using DHCP and that
-  #   # tailscale, tailscaleUnlock, initrd networking, and initrd SSH are enabled.
-  #   assertion =
-  #     config.networking.interfaces.eth0.useDHCP &&
-  #     config.services.tailscale.enable &&
-  #     (config.remote-machine.boot.tailscaleUnlock.enable or true) &&
-  #     config.boot.initrd.network.enable &&
-  #     config.boot.initrd.network.ssh.enable;
-  #   message = "Workstation may not be remotely accessible via tailscale.";
-  # }];
+  assertions = [{
+    # Ensure eth0 (motherboard ethernet) is using DHCP and that
+    # tailscale, tailscaleUnlock, initrd networking, and initrd SSH are enabled.
+    assertion =
+      config.networking.interfaces.eth0.useDHCP &&
+      config.services.tailscale.enable &&
+      config.remote-machine.boot.tailscaleUnlock.enable &&
+      config.boot.initrd.network.enable &&
+      config.boot.initrd.network.ssh.enable;
+    message = "Workstation may not be remotely accessible via tailscale.";
+  }];
 
+  boot.initrd.availableKernelModules = [
+    "nvme"
+    "ahci"
+    "usbhid"
+    "r8169" # Driver for MSI (motherboard) 2.5GbE interface
+  ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "ahci" "usbhid" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
@@ -98,6 +103,9 @@ in
     lsof
     nil
     nixpkgs-fmt
+    cryptsetup
+    linuxPackages.usbip
+    input-leap
   ];
 
   services.openssh.enable = true;
@@ -113,6 +121,28 @@ in
   systemd.targets.suspend.enable = false;
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
+
+  ### === Remote LUKS/ZFS Unlock  ============================================================
+
+  # Enable tailscale in initrd
+  remote-machine.boot.tailscaleUnlock = {
+    enable = true;
+    tailscaleStatePath = "/etc/secrets/initrd/tailscale-luks-setup.state";
+  };
+
+  # Enable networking and SSH server in initrd
+  boot.initrd = {
+    network.enable = true;
+    network.ssh = {
+      enable = true;
+      authorizedKeys = flake.config.people.users.${flake.config.people.myself}.sshKeys;
+      hostKeys = [
+        # WARNING: DON'T USE AGE HERE
+        "/etc/secrets/initrd/ssh_host_rsa_key"
+        "/etc/secrets/initrd/ssh_host_ed25519_key"
+      ];
+    };
+  };
 
   ### === users ================================================================
 
