@@ -11,5 +11,7 @@
 
   environment.systemPackages = with pkgs; [
     gnome.dconf-editor
+
+    gnomeExtensions.brightness-control-using-ddcutil
   ];
 }
