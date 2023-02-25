@@ -28,6 +28,7 @@
         ];
         programs.bash.enable = true;
       };
+      docker.imports = [ ./virtualisation/docker.nix ];
       common-darwin = {
         imports = [
           self.homeModules.common

@@ -44,6 +44,7 @@
           workstation = self.lib.mkLinuxSystem "x86_64-linux" {
             imports = [
               self.nixosModules.default # Defined in nixos/default.nix
+              self.nixosModules.docker # Defined in nixos/default.nix
               ./systems/workstation
               ./nixos/server/harden.nix
               ./nixos/hercules.nix

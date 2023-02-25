@@ -25,6 +25,7 @@ in
       myself = mkHomeModule config.people.myself [
         ../home/shellcommon.nix
         self.homeModules.emacs
+        self.homeModules.docker
       ];
       default.imports = [
         self.nixosModules.home-manager
@@ -39,6 +40,9 @@ in
         ./current-location.nix
         ./terminal.nix
         ./gnome.nix
+      ];
+      docker.imports = [
+        ./virtualisation/docker.nix
       ];
     };
   };
