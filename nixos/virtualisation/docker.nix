@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Connor Feeley
+#
+# SPDX-License-Identifier: MIT
+
 { flake, config, ... }:
 let people = flake.config.people;
 in {

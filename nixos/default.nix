@@ -40,6 +40,7 @@ in
         ./current-location.nix
         ./terminal.nix
         ./gnome.nix
+        ./nvidia.nix
       ];
       docker.imports = [
         ./virtualisation/docker.nix
