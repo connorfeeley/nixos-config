@@ -15,7 +15,7 @@
     gh
     nixpkgs-fmt
     emanote
-    inputs.hci.packages.${system}.hercules-ci-cli
+    inputs.hercules-ci-agent.packages.${system}.hercules-ci-cli
     inputs.nixpkgs-match.packages.${system}.default
 
     # We must install Agda globally so that Doom-Emacs' agda config can
