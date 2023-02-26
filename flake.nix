@@ -52,6 +52,18 @@
             ];
           };
         };
+
+        # Configurations for macOS machines (using nix-darwin)
+        darwinConfigurations = {
+          MacBook-Pro = self.lib.mkMacosSystem "aarch64-darwin" {
+            imports = [
+              # FIXME: self.darwinModules.default being defined cases nix to segfault
+              self.darwinModules.default # Defined in nix-darwin/default.nix
+              ./systems/MacBook-Pro.nix
+              ./nixos/hercules.nix
+            ];
+          };
+        };
       };
 
       perSystem = { pkgs, config, inputs', ... }: {

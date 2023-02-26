@@ -18,6 +18,9 @@ in
   # Configuration common to all Linux systems
   flake = {
     nixosModules = {
+      # nixpkgs overlay module
+      nixpkgs.imports = [{ nixpkgs.overlays = self.lib.commonOverlays; }];
+
       guests.imports = [
         # Temporarily sharing with Uday, until he gets better machine.
         (mkHomeModule "uday" [ ])
