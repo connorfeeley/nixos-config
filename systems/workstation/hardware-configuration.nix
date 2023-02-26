@@ -15,9 +15,9 @@
   boot.supportedFilesystems = [ "ext4" "ntfs" ];
 
   boot.kernelParams = [
-    # HACK Disables fixes for spectre, meltdown, L1TF and a number of CPU
-    #      vulnerabilities. Don't copy this blindly! And especially not for
-    #      mission critical or server/headless builds exposed to the world.
+    # WARNING: Disables fixes for spectre, meltdown, L1TF and a number of CPU
+    #          vulnerabilities. Don't copy this blindly! And especially not for
+    #          mission critical or server/headless builds exposed to the world.
     "mitigations=off"
 
     # Max ARC (Adaptive Replacement Cache) size: 12GB
