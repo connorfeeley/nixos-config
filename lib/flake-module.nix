@@ -46,7 +46,7 @@ let
 in
 {
   flake = {
-    # Linux home-manager module
+    # Linux nixpkgs overlay module
     nixosModules.nixpkgs = {
       imports = [{
         nixpkgs = { inherit overlays; };
@@ -65,6 +65,12 @@ in
           };
         })
       ];
+    };
+    # MacOS nixpkgs overlay module
+    darwinModules.nixpkgs = {
+      imports = [{
+        nixpkgs = { inherit overlays; };
+      }];
     };
     # macOS home-manager module
     darwinModules.home-manager = {
@@ -99,7 +105,7 @@ in
           flake = { inherit config; };
           rosettaPkgs = import inputs.nixpkgs { system = "x86_64-darwin"; };
         };
-        modules = [ self.nixosModules.nixpkgs mod ];
+        modules = [ self.darwinModules.nixpkgs mod ];
       };
     };
   };

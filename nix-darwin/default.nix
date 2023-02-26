@@ -15,20 +15,29 @@ let
   };
 in
 {
-  # Configuration common to all macOS systems
+  # Configuration common to all Linux systems
   flake = {
-    darwinModules = {
+    nixosModules = {
       myself = mkHomeModule config.people.myself [
         ../home/shellcommon.nix
         self.homeModules.emacs
         self.homeModules.docker
       ];
-      default = {
+      default.imports = [
+        self.darwinModules.home-manager
+        self.darwinModules.myself
+        inputs.agenix.darwinModules.age
+      ];
+    };
+
+    # Configurations for macOS machines (using nix-darwin)
+    darwinConfigurations = {
+      MacBook-Pro = self.lib.mkMacosSystem "aarch64-darwin" {
         imports = [
-          self.darwinModules.home-manager
-          self.darwinModules.myself
-          ../nixos/caches
-          ./homebrew.nix
+          # FIXME: self.darwinModules.default cases nix to segfault
+          # self.darwinModules.default # Defined in nix-darwin/default.nix
+          ../systems/MacBook-Pro.nix
+          ../nixos/hercules.nix
         ];
       };
     };
