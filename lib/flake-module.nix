@@ -141,7 +141,7 @@ in
     mission-control.scripts = {
       builder = {
         description = "Run NixOS aarch64-linux builder on macOS ('C-a x' to shutdown)";
-        exec = "${self.perSystem.${system}.packages.builder}/bin/macos-builder";
+        exec = "${self.packages.${system}.builder}/bin/macos-builder";
       };
       update-primary = {
         description = ''
@@ -163,7 +163,7 @@ in
           if system == "aarch64-darwin" then
             ''
               cd "$(${lib.getExe config.flake-root.package})"
-              ${self.darwinConfigurations.default.system}/sw/bin/darwin-rebuild \
+              ${self.darwinConfigurations.MacBook-Pro.system}/sw/bin/darwin-rebuild \
                 switch --flake .#default
             ''
           else
