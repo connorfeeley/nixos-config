@@ -49,6 +49,7 @@
     })
   ];
 
+  programs.zsh.enable = true;
   services.karabiner-elements.enable = true;
 
   nix = {
