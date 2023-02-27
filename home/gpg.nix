@@ -47,7 +47,7 @@ in
 
     publicKeys = [
       {
-        source = gpgKey.public;
+        source = gpgKey.publicKeyFile;
         trust = "ultimate";
       }
     ];

@@ -25,6 +25,10 @@ let
               description = "Keygrip of the GPG key";
             };
             public = lib.mkOption {
+              type = lib.types.str;
+              description = "Public key";
+            };
+            publicKeyFile = lib.mkOption {
               type = lib.types.path;
               description = "Public key file";
             };
