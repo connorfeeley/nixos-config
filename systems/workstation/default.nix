@@ -44,7 +44,7 @@ in
   boot.extraModulePackages = [ ];
 
   nix.settings.max-jobs = lib.mkDefault 12;
-  nix.settings.system-features = lib.mkDefault 12 [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+  nix.settings.system-features = lib.mkDefault [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
 
   # Network (Hetzner uses static IP assignments, and we don't use DHCP here)
