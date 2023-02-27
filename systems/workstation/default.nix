@@ -210,7 +210,7 @@ in
     displayManager = {
       autoLogin = {
         # Log in automatically
-        enable = true;
+        enable = false;
         user = flake.config.people.myself;
       };
 
