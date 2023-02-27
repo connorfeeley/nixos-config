@@ -9,6 +9,8 @@ let
       imports = [
         self.homeModules.common-darwin
         ../home/git.nix
+
+        ../home/darwin/keyboard
       ] ++ extraModules;
     };
   };
