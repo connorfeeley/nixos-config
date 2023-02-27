@@ -9,9 +9,11 @@
   # - secrets
   # - ssh keys
   services.hercules-ci-agent = {
-    enable = with pkgs.stdenv; is64bit && isx86_64;
+    # FIXME: upstream is 9 kinds of broken
+    # enable = with pkgs.stdenv; is64bit && isx86_64;
+    enable = true;
     # nixpkgs may not always have the latest HCI.
-    package = inputs.hercules-ci-agent.packages.${system}.hercules-ci-agent;
+    # package = inputs.hercules-ci-agent.packages.${system}.hercules-ci-agent;
   };
 
   # Regularly optimize nix store if using CI, because CI use can produce *lots*
