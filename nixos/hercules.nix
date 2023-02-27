@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-{ pkgs, lib, inputs, system, ... }:
+{ options, pkgs, lib, inputs, system, ... }:
 
 {
   # TODO: use agenix to manage
@@ -11,7 +11,7 @@
   services.hercules-ci-agent = {
     # FIXME: upstream is 9 kinds of broken
     # enable = with pkgs.stdenv; is64bit && isx86_64;
-    enable = true;
+    enable = pkgs.stdenv.isDarwin || (pkgs.stdenv.isLinux && !options.virtualisation ? qemu);
     # nixpkgs may not always have the latest HCI.
     # package = inputs.hercules-ci-agent.packages.${system}.hercules-ci-agent;
   };

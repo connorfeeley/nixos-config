@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 { flake, modulesPath, self, inputs, config, options, lib, pkgs, profiles, ... }:
-let inherit (pkgs.stdenv.hostPlatform) isx86_64;
+let
+  people = flake.config.people;
+  myKeys = people.users.${people.myself}.sshKeys;
 in
 {
   # imports = [ ./hardware-configuration.nix ./zfs-root.nix ./samba.nix ];
@@ -136,7 +138,7 @@ in
     network.enable = true;
     network.ssh = {
       enable = true;
-      authorizedKeys = flake.config.people.users.${flake.config.people.myself}.sshKeys;
+      authorizedKeys = myKeys;
       hostKeys = [
         # WARNING: DON'T USE AGE HERE
         "/etc/secrets/initrd/ssh_host_rsa_key"
