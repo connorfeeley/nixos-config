@@ -95,6 +95,7 @@
 
               cores = 8; # Builder go brrrr
               memorySize = lib.mkOverride 9 (1024 * 8); # 8 GiB - otherwise OOMs on emacsGit
+              diskSize = lib.mkOverride 9 (40 * 1024); # 40 GiB
 
               msize = 1024 * 1024 * 100; # 100M
             };
