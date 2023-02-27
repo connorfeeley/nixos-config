@@ -191,6 +191,7 @@ lib.mkMerge [
         texlive.combined.scheme-medium
         # :lang nix
         nixpkgs-fmt
+        nixfmt
 
         # :lang sh
         shellcheck # <- bash doesn't have to be scary
