@@ -9,6 +9,8 @@
       common = {
         home.stateVersion = "21.11";
         imports = [
+          ./modules/gpg-agent.nix
+
           ./tmux.nix
           ./neovim.nix
           ./starship.nix

@@ -21,7 +21,7 @@ in
   ];
 
   services.gpg-agent = {
-    enable = pkgs.stdenv.isLinux;
+    enable = true;
     enableSshSupport = true;
     sshKeys = [ gpgKey.keygrip ];
 
