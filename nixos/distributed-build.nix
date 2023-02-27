@@ -40,5 +40,5 @@
   '';
 
   # Customized MacOS builder (with aarch64-linux and x86_64-linux support)
-  environment.systemPackages = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin [ packages'.builder ];
+  environment.systemPackages = lib.mkIf pkgs.stdenv.isDarwin [ packages'.builder ];
 }

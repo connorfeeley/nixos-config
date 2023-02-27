@@ -50,7 +50,7 @@
 
     gnome.gnome-boxes
     gnome.dconf-editor
-  ] ++ (lib.optionals pkgs.stdenv.isx86_64) [
+  ] ++ (lib.optionals pkgs.stdenv.hostPlatform.isx86_64) [
     tensorman
     xmonad-config
   ] ++ (with gnomeExtensions; [

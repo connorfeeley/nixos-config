@@ -9,7 +9,7 @@
   # - secrets
   # - ssh keys
   services.hercules-ci-agent = {
-    enable = true;
+    enable = with pkgs.stdenv; is64bit && isx86_64;
     # nixpkgs may not always have the latest HCI.
     package = inputs.hercules-ci-agent.packages.${system}.hercules-ci-agent;
   };
