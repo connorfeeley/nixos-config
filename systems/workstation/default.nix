@@ -109,6 +109,9 @@ in
     cryptsetup
     linuxPackages.usbip
     input-leap
+
+    firefox
+    microsoft-edge
   ];
 
   services.openssh.enable = true;
