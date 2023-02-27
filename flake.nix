@@ -1,5 +1,6 @@
+# SPDX-FileCopyrightText: 2023 Connor Feeley
+# SPDX-License-Identifier: BSD-3-Clause
 # SPDX-FileCopyrightText: 2023 Sridhar Ratnakumar
-#
 # SPDX-License-Identifier: BSD-3-Clause
 
 {
@@ -158,7 +159,7 @@
     deploy-flake = { url = "github:antifuchs/deploy-flake"; inputs.nixpkgs.follows = "nixpkgs"; };
     prefmanager.url = "github:malob/prefmanager";
     tum-dse-config = { url = "github:TUM-DSE/doctor-cluster-config"; inputs.nixpkgs.follows = "nixpkgs"; inputs.nixpkgs-unstable.follows = "nixpkgs"; inputs.flake-parts.follows = "flake-parts"; };
-    neovim-plusultra = { url = "github:jakehamilton/neovim"; };
+    neovim-plusultra = { url = "github:jakehamilton/neovim"; inputs.nixpkgs.follows = "nixpkgs"; };
     emacstool = { url = "github:paulotome/emacstool"; flake = false; };
 
     ##: --- other --------------------------------------------------------------

@@ -48,6 +48,11 @@ in
         self.nixosModules.home-manager
         self.nixosModules.myself
         inputs.agenix.nixosModules.age
+
+        (mkHomeModule "misc" [
+          self.homeModules.jetbrains
+        ])
+
         ./vmVariant.nix
         ./distributed-build.nix
         ./boot-unlock.nix
