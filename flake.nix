@@ -62,6 +62,8 @@
               self.darwinModules.default # Defined in nix-darwin/default.nix
               ./systems/MacBook-Pro.nix
               ./nixos/hercules.nix
+
+              ./nix-darwin/gui/xquartz.nix
             ];
           };
         };
