@@ -77,7 +77,7 @@ in
     userName = myself.name;
 
     signing = lib.mkIf enableSigning {
-      key = builtins.readFile myself.gpgKey.public;
+      key = builtins.readFile myself.gpgKey.keygrip;
       signByDefault = true;
       gpgPath = "${git-gpg-privacy}/bin/git-gpg-privacy";
     };
