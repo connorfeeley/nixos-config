@@ -22,15 +22,14 @@ in
     # TODO: just use nixosModules.home-manager instead?
     darwinModules.nixpkgs.imports = [{ nixpkgs.overlays = self.lib.commonOverlays; }];
 
-    darwinModules.home-manager = {
+    darwinModules.home-manager = { pkgs, inputs, system, ... }: {
       imports = [
         inputs.home-manager.darwinModules.home-manager
         ({
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.extraSpecialArgs = {
-            inherit inputs;
-            system = "aarch64-darwin";
+            inherit inputs system;
             flake = { inherit config; };
           };
         })
