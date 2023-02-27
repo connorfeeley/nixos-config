@@ -18,9 +18,6 @@
     inputs.hercules-ci-agent.packages.${system}.hercules-ci-cli
     inputs.nixpkgs-match.packages.${system}.default
 
-    # Customized MacOS builder
-    packages'.builder
-
     # We must install Agda globally so that Doom-Emacs' agda config can
     # recognize it. It doesn't matter that our projects use Nix/direnv.
     #
