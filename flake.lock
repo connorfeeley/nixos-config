@@ -1933,11 +1933,11 @@
         "snowfall-lib": "snowfall-lib"
       },
       "locked": {
-        "lastModified": 1676276254,
-        "narHash": "sha256-6k7lJrAuaIVPDVCqbkK4caiNtw75i2a1/v33Erh9uwU=",
+        "lastModified": 1677396938,
+        "narHash": "sha256-F8ZsA6+MyQYfyApe3bG3bZd9O9Cw5GtI2sqPgKpRTMY=",
         "owner": "jakehamilton",
         "repo": "neovim",
-        "rev": "ce91e2174cb36a9aee0c99ee9f0cdaccbb080f94",
+        "rev": "acea9039425df12971eb1b565eada29ed06bccc8",
         "type": "github"
       },
       "original": {
