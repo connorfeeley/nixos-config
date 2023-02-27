@@ -52,6 +52,8 @@
         specialArgs = {
           inherit system inputs;
           flake = { inherit config; };
+          # Pass flake packages with system pre-selected as arg.
+          packages' = self.packages.${system};
         };
         modules = [ self.nixosModules.nixpkgs mod ];
       };
@@ -61,6 +63,8 @@
         specialArgs = {
           inherit inputs system;
           flake = { inherit config; };
+          # Pass flake packages with system pre-selected as arg.
+          packages' = self.packages.${system};
           rosettaPkgs = import inputs.nixpkgs { system = "x86_64-darwin"; };
         };
         modules = [ self.darwinModules.nixpkgs mod ];
