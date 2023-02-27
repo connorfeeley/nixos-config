@@ -41,6 +41,7 @@ in
         ./terminal.nix
         ./gnome.nix
         ./nvidia.nix
+        ./containers/jellyfin.nix
       ];
       docker.imports = [
         ./virtualisation/docker.nix
