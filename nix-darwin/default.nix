@@ -45,6 +45,7 @@ in
       self.darwinModules.home-manager
       self.darwinModules.myself
       inputs.agenix.darwinModules.age
+      ../nixos/distributed-build.nix
     ];
   };
 }

@@ -49,6 +49,7 @@ in
         self.nixosModules.myself
         inputs.agenix.nixosModules.age
         ./vmVariant.nix
+        ./distributed-build.nix
         ./boot-unlock.nix
         ./tailscale.nix
         ./caches
