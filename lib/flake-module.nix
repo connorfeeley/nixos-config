@@ -84,6 +84,10 @@
           configuration = {
             imports = [ (modulesPath + "/profiles/macos-builder.nix") ];
 
+            # Embed my pubilc SSH key into the builder
+            users.users.builder.openssh.authorizedKeys.keys = config.people.users.${config.people.myself}.sshKeys;
+
+            # Hercules CI seems to have a build-time dependency on x86_64-linux
             boot.binfmt.emulatedSystems = [ "x86_64-linux" ];
 
             virtualisation = {
