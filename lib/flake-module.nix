@@ -94,7 +94,7 @@
               host = { inherit pkgs; };
 
               cores = 8; # Builder go brrrr
-              memorySize = lib.mkOverride 9 (1024 * 6); # 6 GiB - otherwise OOMs on emacsGit
+              memorySize = lib.mkOverride 9 (1024 * 8); # 8 GiB - otherwise OOMs on emacsGit
 
               msize = 1024 * 1024 * 100; # 100M
             };
