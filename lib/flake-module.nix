@@ -99,7 +99,7 @@
     mission-control.scripts = {
       builder = {
         description = "Run NixOS aarch64-linux builder on macOS ('C-a x' to shutdown)";
-        exec = "${self.packages.${system}.builder}/bin/macos-builder";
+        exec = "${self.packages.${system}.builder}/bin/create-builder";
       };
       update-primary = {
         description = ''
