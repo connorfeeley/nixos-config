@@ -47,9 +47,9 @@ in
       inputs.agenix.darwinModules.age
       ../nixos/distributed-build.nix
 
-        (mkHomeModule "misc" [
-          self.homeModules.jetbrains
-        ])
+      (mkHomeModule "cfeeley" [
+        self.homeModules.jetbrains
+      ])
     ];
   };
 }

@@ -85,7 +85,7 @@
             imports = [ (modulesPath + "/profiles/macos-builder.nix") ];
 
             # Embed my pubilc SSH key into the builder
-            users.users.builder.openssh.authorizedKeys.keys = config.people.users.${config.people.myself}.sshKeys;
+            # users.users.builder.openssh.authorizedKeys.keys = self.config.people.users.${config.people.myself}.sshKeys;
 
             # Hercules CI seems to have a build-time dependency on x86_64-linux
             boot.binfmt.emulatedSystems = [ "x86_64-linux" ];
@@ -104,6 +104,30 @@
         };
       in
       nixos.config.system.build.macos-builder-installer;
+
+    packages.workstation-aarch64-vm =
+      let
+        modulesPath = "${inputs.nixpkgs}/nixos/modules";
+        toGuest = builtins.replaceStrings [ "darwin" ] [ "linux" ];
+
+        nixos = self.lib.mkLinuxSystem (toGuest pkgs.stdenv.hostPlatform.system) {
+          imports = [
+            self.nixosConfigurations.workstation.config.system
+            {
+              # Platform of the VM
+              nixpkgs.hostPlatform = "aarch64-linux";
+
+              virtualisation = {
+                # Platform of the host
+                host = { inherit pkgs; };
+              };
+              environment.systemPackages = [pkgs.hello];
+            }
+          ];
+        };
+      in
+      nixos.config.system.build.vm;
+      # nixos.config.system.build.toplevel;
 
     mission-control.scripts = {
       builder = {

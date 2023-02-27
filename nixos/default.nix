@@ -49,7 +49,7 @@ in
         self.nixosModules.myself
         inputs.agenix.nixosModules.age
 
-        (mkHomeModule "misc" [
+        (mkHomeModule "cfeeley" [
           self.homeModules.jetbrains
         ])
 
@@ -64,11 +64,9 @@ in
         ./terminal.nix
         ./gnome.nix
         ./nvidia.nix
-        ./containers/jellyfin.nix
       ];
-      docker.imports = [
-        ./virtualisation/docker.nix
-      ];
+      docker.imports = [ ./virtualisation/docker.nix ];
+      jellyfin.imports = [ ./containers/jellyfin.nix ];
     };
   };
 }

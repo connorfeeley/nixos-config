@@ -11,6 +11,7 @@
     ripgrep
     fd
     procs
+    duf
 
     inputs.comma.packages.${system}.default
   ];
