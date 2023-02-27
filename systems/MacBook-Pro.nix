@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-{ config, pkgs, lib, inputs, system, flake, rosettaPkgs, ... }:
+{ config, pkgs, lib, inputs, system, flake, packages', rosettaPkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -18,9 +18,12 @@
     inputs.hercules-ci-agent.packages.${system}.hercules-ci-cli
     inputs.nixpkgs-match.packages.${system}.default
 
+    # Customized MacOS builder
+    packages'.builder
+
     # We must install Agda globally so that Doom-Emacs' agda config can
     # recognize it. It doesn't matter that our projects use Nix/direnv.
-    # 
+    #
     # Emacs configuration system assumes global state, and is thus shit. We just work with it.
     # https://github.com/hlissner/doom-emacs/blob/f458f9776049fd7e9523318582feed682e7d575c/modules/lang/agda/config.el#L3-L8
     (rosettaPkgs.agda.withPackages (p: [ p.standard-library ]))
@@ -44,8 +47,10 @@
         kill "$THEPID"
       '';
     })
-
   ];
+
+  programs.zsh.enable = true;
+  services.karabiner-elements.enable = true;
 
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ]; # Enables use of `nix-shell -p ...` etc

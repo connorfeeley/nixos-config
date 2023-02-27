@@ -54,18 +54,16 @@
         };
 
         # Configurations for macOS machines (using nix-darwin)
-        darwinConfigurations =
-          let
-            default = MacBook-Pro;
-            MacBook-Pro = self.lib.mkMacosSystem "aarch64-darwin" {
-              imports = [
-                self.darwinModules.default # Defined in nix-darwin/default.nix
-                ./systems/MacBook-Pro.nix
-                ./nixos/hercules.nix
-              ];
-            };
-          in
-          { inherit default MacBook-Pro; };
+        darwinConfigurations = {
+          MacBook-Pro = self.lib.mkMacosSystem "aarch64-darwin" {
+            imports = [
+              # FIXME: self.darwinModules.default being defined cases nix to segfault
+              self.darwinModules.default # Defined in nix-darwin/default.nix
+              ./systems/MacBook-Pro.nix
+              ./nixos/hercules.nix
+            ];
+          };
+        };
       };
 
       perSystem = { pkgs, config, inputs', ... }: {
@@ -105,6 +103,7 @@
     # : ~~~ Devshell inputs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     mission-control.url = "github:Platonic-Systems/mission-control";
     flake-root.url = "github:srid/flake-root";
+    nixpkgs-match.url = "github:srid/nixpkgs-match";
 
     # : ~~~ FHS compat ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     nix-alien = { url = "github:thiagokokada/nix-alien"; inputs.nixpkgs.follows = "nixpkgs"; };

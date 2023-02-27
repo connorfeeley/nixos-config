@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-{ config, ... }:
+{ config, pkgs, lib, ... }:
 let
   nvidia_x11 = config.boot.kernelPackages.nvidia_x11;
   nvidia_gl = nvidia_x11.out;
@@ -12,12 +12,13 @@ in
   hardware.opengl = {
     enable = true;
     driSupport = true;
-    driSupport32Bit = true;
+    # https://github.com/NixOS/nixpkgs/issues/47932#issuecomment-447508411
+    driSupport32Bit = pkgs.stdenv.is64bit && pkgs.stdenv.isx86_64;
     extraPackages = [ nvidia_gl ];
     extraPackages32 = [ nvidia_gl_32 ];
   };
 
   virtualisation.docker = {
-    enableNvidia = true;
+    enableNvidia = pkgs.stdenv.is64bit && pkgs.stdenv.isx86_64;
   };
 }

@@ -18,6 +18,23 @@ in
   # Configuration common to all Linux systems
   flake = {
     nixosModules = {
+      # nixpkgs overlay module
+      nixpkgs.imports = [{ nixpkgs.overlays = self.lib.commonOverlays; }];
+
+      home-manager = {
+        imports = [
+          inputs.home-manager.darwinModules.home-manager
+          ({
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              system = "aarch64-darwin";
+              flake = { inherit config; };
+            };
+          })
+        ];
+      };
       guests.imports = [
         # Temporarily sharing with Uday, until he gets better machine.
         (mkHomeModule "uday" [ ])

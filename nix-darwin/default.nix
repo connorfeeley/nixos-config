@@ -5,32 +5,46 @@
 { self, inputs, config, ... }:
 let
   mkHomeModule = name: extraModules: {
-    users.users.${name}.isNormalUser = true;
     home-manager.users.${name} = {
       imports = [
         self.homeModules.common-darwin
         ../home/git.nix
+
+        ../home/darwin/keyboard
       ] ++ extraModules;
     };
   };
 in
 {
-  # Configuration common to all macOS systems
+  # Configuration common to all Linux systems
   flake = {
-    darwinModules = {
-      myself = mkHomeModule config.people.myself [
-        ../home/shellcommon.nix
-        self.homeModules.emacs
-        self.homeModules.docker
+    # nixpkgs overlay module
+    # TODO: just use nixosModules.home-manager instead?
+    darwinModules.nixpkgs.imports = [{ nixpkgs.overlays = self.lib.commonOverlays; }];
+
+    darwinModules.home-manager = {
+      imports = [
+        inputs.home-manager.darwinModules.home-manager
+        ({
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.extraSpecialArgs = {
+            inherit inputs;
+            system = "aarch64-darwin";
+            flake = { inherit config; };
+          };
+        })
       ];
-      default = {
-        imports = [
-          self.darwinModules.home-manager
-          self.darwinModules.myself
-          ../nixos/caches
-          ./homebrew.nix
-        ];
-      };
     };
+    darwinModules.myself = mkHomeModule config.people.myself [
+      ../home/shellcommon.nix
+      self.homeModules.emacs
+      self.homeModules.docker
+    ];
+    darwinModules.default.imports = [
+      self.darwinModules.home-manager
+      self.darwinModules.myself
+      inputs.agenix.darwinModules.age
+    ];
   };
 }
