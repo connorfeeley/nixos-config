@@ -67,13 +67,30 @@
         };
       };
 
-      perSystem = { pkgs, config, inputs', ... }: {
+      perSystem = { pkgs, system, config, inputs', ... }: {
         devShells.default = config.mission-control.installToDevShell (pkgs.mkShell {
           buildInputs = [
             pkgs.nixpkgs-fmt
             inputs'.agenix.packages.agenix
           ];
         });
+        packages = (lib.filterPackages system (lib.mapAttrs (_k: v: pkgs.callPackage v { }) (lib.flattenTree (lib.rakeLeaves ./packages)))) // {
+          flake-benchmark =
+            let inherit (inputs'.nixpkgs.legacyPackages) writeShellScriptBin nix hyperfine;
+              # Command to benchmark
+              check = "${nix}/bin/nix flake check ${self}";
+              # Run the check command first to ensure the evaluation cache is populated
+              # and necessary flake packages are built.
+              benchmark = "${hyperfine}/bin/hyperfine --prepare '${check}' '${check}'";
+            in
+            writeShellScriptBin "flake-benchmark" benchmark;
+
+          ediff-tool = pkgs.stdenv.mkDerivation {
+            name = "ediff-tool";
+            src = inputs.emacstool.outPath;
+            installPhase = "install -Dm755 ediff.sh $out/bin/ediff-tool";
+          };
+        };
         formatter = pkgs.nixpkgs-fmt;
       };
     };
