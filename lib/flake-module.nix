@@ -84,6 +84,8 @@
           configuration = {
             imports = [ (modulesPath + "/profiles/macos-builder.nix") ];
 
+            boot.binfmt.emulatedSystems = [ "x86_64-linux" ];
+
             virtualisation = {
               host = { inherit pkgs; };
 
@@ -96,7 +98,6 @@
 
           system = toGuest pkgs.stdenv.hostPlatform.system;
         };
-
       in
       nixos.config.system.build.macos-builder-installer;
 
