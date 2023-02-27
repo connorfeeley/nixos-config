@@ -46,6 +46,10 @@ in
       self.darwinModules.myself
       inputs.agenix.darwinModules.age
       ../nixos/distributed-build.nix
+
+        (mkHomeModule "misc" [
+          self.homeModules.jetbrains
+        ])
     ];
   };
 }

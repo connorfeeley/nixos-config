@@ -35,11 +35,10 @@
         ];
       };
       emacs = {
-        imports = [
-          ./emacs
-        ];
+        imports = [ ./emacs ];
         programs.bash.enable = true;
       };
+      jetbrains.imports = [ ./jetbrains ];
     };
   };
 }
