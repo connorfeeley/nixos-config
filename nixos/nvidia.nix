@@ -8,17 +8,20 @@ let
   nvidia_gl = nvidia_x11.out;
   nvidia_gl_32 = nvidia_x11.lib32;
 in
-{
+# Nvidia hates ARM
+lib.mkIf (pkgs.stdenv.is64bit && pkgs.stdenv.isx86_64) {
   hardware.opengl = {
     enable = true;
+
     driSupport = true;
     # https://github.com/NixOS/nixpkgs/issues/47932#issuecomment-447508411
-    driSupport32Bit = pkgs.stdenv.is64bit && pkgs.stdenv.isx86_64;
+    driSupport32Bit = true;
+
     extraPackages = [ nvidia_gl ];
     extraPackages32 = [ nvidia_gl_32 ];
   };
 
   virtualisation.docker = {
-    enableNvidia = pkgs.stdenv.is64bit && pkgs.stdenv.isx86_64;
+    enableNvidia = true;
   };
 }

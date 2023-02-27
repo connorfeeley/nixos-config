@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 { config, lib, pkgs, ... }: {
-  home.packages = with pkgs.jetbrains; [
+  home.packages = lib.mkIf pkgs.stdenv.isx86_64 (with pkgs.jetbrains; [
     clion
     datagrip
     gateway
@@ -11,5 +11,5 @@
     idea-ultimate
     pycharm-professional
     webstorm
-  ];
+  ]);
 }

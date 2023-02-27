@@ -38,7 +38,6 @@
   programs.gnupg.agent.pinentryFlavor = "gnome3";
 
   environment.systemPackages = with pkgs; [
-    tensorman
     popsicle
     firmware-manager
 
@@ -48,10 +47,12 @@
     pop-gtk-theme
     toronto-backgrounds
 
-    xmonad-config
 
     gnome.gnome-boxes
     gnome.dconf-editor
+  ] ++ (lib.optionals pkgs.stdenv.isx86_64) [
+    tensorman
+    xmonad-config
   ] ++ (with gnomeExtensions; [
     pop-shell
     pop-theme-switcher
