@@ -46,6 +46,9 @@ in
       inputs.agenix.darwinModules.age
       ../nixos/distributed-build.nix
 
+      ./core.nix
+      ./homebrew.nix
+
       (mkHomeModule "cfeeley" [
         self.homeModules.jetbrains
       ])

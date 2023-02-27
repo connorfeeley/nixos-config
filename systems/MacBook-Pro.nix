@@ -73,6 +73,9 @@
   nixpkgs.config.allowBroken = true;
   nixpkgs.config.allowUnsupportedSystem = true;
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "libressl-3.4.3" # prefmanager
+  ];
 
   security.pam.enableSudoTouchIdAuth = true;
 
